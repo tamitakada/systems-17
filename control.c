@@ -31,21 +31,18 @@ int main(int argc, char **argv) {
         
         if (strcmp(argv[1], "-create") == 0) {
             char * message = argv[2];
-            printf("m: %s\n", message);
             
             int fd = open("message", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-            int size = 0;
             char *c = argv[2];
             while (*c) {
                 write(fd, c, sizeof(char));
-                size++;
                 c++;
             }
             close(fd);
 
             int *data;
             data = shmat(shmd, 0, 0);
-            *data = size;
+            *data = 0;
             shmdt(data);
 
             union semun us;
@@ -68,4 +65,3 @@ int main(int argc, char **argv) {
         }
     }
 }
-
